@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Track Order | Kebtye</title>
+    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="icon" href="/favicon.png" type="image/png">
+</head>
+<body style="background-color: #f2f2f2;">
+    <%- include('partials/navbar') %>
+
+    <section class="section">
+        <h2 style="text-align: center; color: #333; margin-bottom: 10px;">📦 Track Your Package</h2>
+        
+        <!-- FIX: Search bar reduced to max-width: 320px -->
+        <form action="/track-result" method="GET" style="max-width: 320px; margin: 0 auto 30px; display: flex; padding: 0; background: transparent; box-shadow: none;">
+            <input type="text" name="orderId" placeholder="Enter Order ID" required 
+                   style="flex: 1; padding: 12px; border: 1px solid #ddd; border-radius: 8px 0 0 8px; outline: none; margin-bottom: 0;">
+            
+        </form>
+
+        <% if (locals.foundOrder) { %>
+            <!-- NEW: Customer Assurance -->
+            <div style="text-align: center; margin-bottom: 15px; color: #555;">
+                Tracking details for: <strong style="color: #fb7701; font-size: 1.1rem;"><%= foundOrder.name %></strong>
+            </div>
+
+            <div class="track-container">
+                <div class="track-header">
+                    <div style="font-size: 1.2rem; font-weight: bold;">
+                        <% if(foundOrder.status === 'Pending') { %> 🕒 Order Placed
+                        <% } else if(foundOrder.status === 'Frying') { %> 🔥 In Production
+                        <% } else { %> 🚚 Delivered <% } %>
+                    </div>
+                    
+                    <!-- NEW: Logic to check steps sequentially -->
+                    <!-- Step 1 is always active. Step 2 active if Frying OR Delivered. Step 3 only if Delivered. -->
+                    <div class="status-bar">
+                        <div class="status-step active">
+                            <div class="status-icon"><i class="fas fa-shopping-cart"></i></div>
+                            Ordered
+                        </div>
+                        
+                        <div class="status-step <%= (foundOrder.status === 'Frying' || foundOrder.status === 'Delivered') ? 'active' : '' %>">
+                            <div class="status-icon"><i class="fas fa-utensils"></i></div>
+                            Frying
+                        </div>
+                        
+                        <div class="status-step <%= foundOrder.status === 'Delivered' ? 'active' : '' %>">
+                            <div class="status-icon"><i class="fas fa-check-circle"></i></div>
+                            Delivered
+                        </div>
+                    </div>
+                </div>
+
+                <div class="guarantee">
+                    <i class="fas fa-shield-alt" style="font-size: 1.5rem;"></i>
+                    <div>
+                        <strong>On-time Guarantee</strong><br>
+                        If delivered lately, get ₦200 credit.
+                    </div>
+                </div>
+
+                <div class="timeline" id="timelineBox"></div>
+            </div>
+
+            <script>
+                const status = "<%= foundOrder.status %>";
+                const time = "<%= foundOrder.time %>";
+                const container = document.getElementById('timelineBox');
+                
+                function addRow(timeStr, title, desc, isHighlight) {
+                    const html = `
+                        <div class="timeline-item ${isHighlight ? 'highlight' : ''}">
+                            <div class="t-time">${timeStr}</div>
+                            <div class="t-dot"></div>
+                            <div class="t-content">
+                                <h4>${title}</h4>
+                                <p>${desc}</p>
+                            </div>
+                        </div>`;
+                    container.innerHTML += html;
+                }
+
+                // CUMULATIVE LOGIC: We stack the history based on progress
+                
+                // 1. Always show Order Placed
+                addRow(time, "Order Submitted", "We have received your order details.", (status === 'Pending'));
+
+                if (status === "Pending") {
+                    addRow("Just now", "Payment Confirmed", "Secure payment verification successful.", true);
+                    addRow("Just now", "Warehouse Processing", "Staff is reviewing your order.", true);
+                } 
+                
+                // 2. If Frying OR Delivered, show Frying history
+                if (status === "Frying" || status === "Delivered") {
+                    addRow("10 mins ago", "Payment Confirmed", "Secure payment verification successful.", false);
+                    addRow("5 mins ago", "Ingredients Prepped", "Fresh flour and milk selected.", false);
+                    addRow("Just now", "Frying in Progress", "Your Chin-Chin is in the hot oil! 🔥", (status === 'Frying'));
+                }
+
+                // 3. If Delivered, show Delivery history
+                if (status === "Delivered") {
+                    addRow("2 hours ago", "Frying Completed", "Golden brown perfection achieved.", false);
+                    addRow("1 hour ago", "Quality Check", "Crunch test passed.", false);
+                    addRow("30 mins ago", "Out for Delivery", "Rider is on the bike.", false);
+                    addRow("Just now", "Delivered", "Package left at front door. Enjoy!", true);
+                }
+            </script>
+
+        <% } else if (locals.error) { %>
+            <div style="text-align: center; color: red; margin-top: 20px;"><%= error %></div>
+        <% } %>
+    </section>
+</body>
+</html>

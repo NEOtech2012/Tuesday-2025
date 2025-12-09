@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kebtye | Tasty & Crunchy Chin-Chin</title>
+    <link rel="icon" href="/logo.jpg" type="image/jpeg">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+    <%- include('partials/navbar') %>
+
+    <section class="hero">
+        <h1>Kebtye Chin-Chin</h1>
+        <p>The crunchiest, tastiest snack in town.</p>
+        <a href="#order" class="btn-main">Place an Order</a>
+    </section>
+
+    <section id="about" class="section">
+        <h2>Why Choose Kebtye?</h2>
+        <div class="features">
+            <div class="feature-card">
+                <h3>🥥 Fresh Ingredients</h3>
+                <p>Made with premium flour, fresh milk, and rich flavors.</p>
+            </div>
+            <div class="feature-card">
+                <h3>🔥 Perfectly Fried</h3>
+                <p>Golden brown and crunchy. Never oily, always tasty.</p>
+            </div>
+            <div class="feature-card">
+                <h3>🚀 Fast Delivery</h3>
+                <p>Order now and get your jar delivered to your doorstep.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="section" style="background-color: #fff0d4;">
+        <h2>See the Crunch in Action</h2>
+        <p style="margin-bottom: 20px;">Freshly fried, golden brown, and ready to eat.</p>
+        
+        <div style="max-width: 800px; margin: 0 auto; border: 5px solid white; box-shadow: 0 10px 20px rgba(0,0,0,0.2);">
+            <video width="100%" height="auto" controls>
+                <source src="/Promo.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+        </div>
+    </section>
+
+    <section id="order" class="order-section section">
+        <h2>Get Your Bag Today</h2>
+        <p style="margin-bottom: 20px;">Price: ₦2,500 per Kg</p>
+
+        <form action="/order" method="POST">
+    <label for="promo">Discount Code (Optional)</label>
+    <input type="text" id="promo" name="promoCode" placeholder="e.g. KEBTYE10">
+
+    <button type="submit">Next</button>
+</form>
+    </section>
+
+    <footer style="background: black; color: white; text-align: center; padding: 40px 20px;">
+        <h3>Connect with Kebtye</h3>
+        <p>Follow us for discounts and new flavors!</p>
+        
+        <div class="social-container">
+            <a href="https://www.facebook.com/share/1QSebvmu5k/" target="_blank" class="social-btn fb">
+                <i class="fab fa-facebook-f"></i>
+            </a>
+
+            <a href="https://twitter.com/YOUR_HANDLE" target="_blank" class="social-btn tw">
+                <i class="fab fa-x-twitter"></i>
+            </a>
+
+            <a href="https://wa.me/2348034831105" target="_blank" class="social-btn wa">
+                <i class="fab fa-whatsapp"></i>
+            </a>
+        </div>
+
+        <p style="margin-top: 20px; font-size: 0.9rem;">&copy; 2025 Kebtye Tasty Chin-Chin. All rights reserved.</p>
+    </footer>
+
+</body>
+</html>
