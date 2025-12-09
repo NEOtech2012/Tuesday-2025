@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Kebtye | Tasty & Crunchy Chin-Chin</title>
+    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="icon" href="/favicon.png" type="image/png">
+</head>
+<body style="background-color: #f4f6f8;">
+    
+    <%- include('partials/navbar') %>
+
+    <div style="max-width: 1200px; margin: 30px auto; padding: 20px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <h1 style="color: #2c3e50;"><i class="fas fa-user-shield"></i> Admin Dashboard</h1>
+            <div style="background: white; padding: 10px 20px; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+                <strong>Total Orders:</strong> <%= orderList.length %>
+            </div>
+        </div>
+
+        <div style="overflow-x: auto; background: white; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.05);">
+            <table style="width: 100%; border-collapse: collapse;">
+                <thead>
+                    <tr style="background-color: #2c3e50; color: white; text-align: left;">
+                        <th style="padding: 15px;">ID / Time</th>
+                        <th style="padding: 15px;">Customer</th>
+                        <th style="padding: 15px;">Order Details</th>
+                        <th style="padding: 15px;">Status (Action)</th>
+                        <th style="padding: 15px;">Delete</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% if (orderList.length === 0) { %>
+                        <tr><td colspan="5" style="text-align: center; padding: 30px; color: #888;">No orders yet.</td></tr>
+                    <% } %>
+
+                    <% orderList.slice().reverse().forEach(function(order) { %>
+                        
+                        <!-- 
+                           FIXED LOGIC: 
+                           We define the colors here in JavaScript first.
+                           This prevents the HTML from breaking.
+                        -->
+                        <% 
+                            let bg = '#fff3cd'; let txt = '#856404'; // Default (Pending)
+                            if(order.status === 'Frying') { bg = '#ffe5d0'; txt = '#d35400'; }
+                            if(order.status === 'Delivered') { bg = '#d4edda'; txt = '#155724'; }
+                        %>
+
+                        <tr style="border-bottom: 1px solid #eee;">
+                            <!-- ID Column -->
+                            <td style="padding: 15px;">
+                                <strong style="color: #555;">#<%= order.id %></strong><br>
+                                <small style="color: #888;"><%= order.time %></small>
+                            </td>
+
+                            <!-- Customer Column -->
+                            <td style="padding: 15px;">
+                                <strong><%= order.name %></strong><br>
+                                <small>📞 <%= order.senderPhone %></small>
+                            </td>
+
+                            <!-- Details Column -->
+                            <td style="padding: 15px;">
+                                <%= order.qty %> Bags<br>
+                                <strong style="color: #27ae60;">₦<%= order.total %></strong>
+                                <% if (order.discount) { %> 
+                                    <span style="font-size:0.7rem; background:#d4edda; color:#155724; padding:2px 5px; border-radius:3px;">PROMO</span> 
+                                <% } %>
+                            </td>
+
+                            <!-- STATUS DROPDOWN (The Fixed Part) -->
+                            <td style="padding: 15px;">
+                                <form action="/update-status" method="POST">
+                                    <input type="hidden" name="orderId" value="<%= order.id %>">
+                                    
+                                    <!-- We use the variables 'bg' and 'txt' we created above -->
+                                    <select name="newStatus" onchange="this.form.submit()" 
+                                            style="padding: 8px; border-radius: 5px; border: 1px solid #ddd; cursor: pointer; font-weight: bold; background-color: <%= bg %>; color: <%= txt %>;">
+                                        
+                                        <option value="Pending" <%= order.status === 'Pending' ? 'selected' : '' %>>🕒 Pending</option>
+                                        <option value="Frying" <%= order.status === 'Frying' ? 'selected' : '' %>>🔥 Frying</option>
+                                        <option value="Delivered" <%= order.status === 'Delivered' ? 'selected' : '' %>>🚚 Delivered</option>
+                                    </select>
+                                </form>
+                            </td>
+
+                            <!-- Delete Button -->
+                            <td style="padding: 15px;">
+                                <form action="/delete" method="POST" onsubmit="return confirm('Delete this order?');">
+                                    <input type="hidden" name="idToDelete" value="<%= order.id %>">
+                                    <button type="submit" style="background: #e74c3c; color: white; border: none; width: 30px; height: 30px; border-radius: 50%; cursor: pointer;">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    <% }); %>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>

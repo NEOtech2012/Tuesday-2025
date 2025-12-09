@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Order Receipt</title>
+    <link rel="icon" href="/logo.jpg" type="image/jpeg">
+    <link rel="stylesheet" href="/style.css">
+    <style>
+        .receipt-box {
+            background: white;
+            border: 2px dashed #d35400;
+            width: 300px;
+            margin: 50px auto;
+            padding: 20px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <%- include('partials/navbar') %>
+
+    <div class="receipt-box">
+        <h2>🧾 Order Confirmed</h2>
+        <p>Customer: <strong><%= name %></strong></p>
+        <hr>
+        <p>Item: Chin-Chin (Crunchy)</p>
+
+        <p>Quantity: <%= qty %> Bags</p>
+        
+        <h3 style="color: green;">Total: ₦<%= total %></h3>
+
+        <% if (locals.discountApplied) { %>
+            <div style="background-color: #d4edda; color: #155724; padding: 10px; margin-top: 10px; border-radius: 5px; border: 1px solid #c3e6cb;">
+                <strong>🎉 Promo Applied!</strong><br>
+                You saved 10% using code KEBTYE10
+            </div>
+        <% } %>
+
+        <div style="background-color: #e8f6fd; border: 1px solid #2196f3; padding: 15px; border-radius: 5px; margin: 20px 0; text-align: center;">
+            <p style="margin: 0; color: #0d47a1; font-weight: bold;">Step 2: Make Transfer Here</p>
+            <h2 style="margin: 10px 0; color: #333; letter-spacing: 2px;">8034831105</h2>
+            <p style="margin: 0; font-size: 0.9rem;">Opay • Ezeagu Nnenna Nebechi</p>
+            <p style="font-size: 0.8rem; color: red; margin-top: 5px;">* Please use Order ID #<%= id %> as remark</p>
+        </div>
+
+        <hr>
+        Use the ID to Track your Order.
+        <br>
+        NOTE: Just use the number,remove #
+        <br>
+        <a href="/home">Place Another Order</a>
+    </div>
+
+</body>
+</html>

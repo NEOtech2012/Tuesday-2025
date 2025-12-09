@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>⚡ FLASH SALE - Kebtye Chin-Chin</title>
+    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body class="temu-body">
+    <div style="background: var(--temu-orange); color: white; padding: 10px; text-align: center; font-weight: bold;">
+        ⚡ FREE SHIPPING ENDS IN: <span id="timer" style="background: black; padding: 2px 5px; border-radius: 3px;">00:15:00</span> ⚡
+    </div>
+
+    <div style="max-width: 600px; margin: 20px auto; background: white; border-radius: 10px; padding: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <span style="background: #ffe6e6; color: var(--temu-red); padding: 5px 10px; border-radius: 5px; font-weight: bold;">🔥 Hot Seller</span>
+            <span style="color: grey; text-decoration: line-through;">₦2,500</span>
+        </div>
+        
+        <h1 style="color: var(--temu-orange); font-size: 2.5rem; margin: 5px 0;">₦2,300 <span style="font-size: 1rem; color: black;">/ bag</span></h1>
+        <p style="color: #27ae60; font-weight: bold;">✅ Extra 10% OFF applied!</p>
+        
+        <img src="/hero.jpg" style="width: 100%; border-radius: 10px; margin: 10px 0;">
+
+        <p style="font-size: 0.8rem; color: var(--temu-red); margin-bottom: 5px;">Almost Sold Out! Only 3 left.</p>
+        <div class="progress-container">
+            <div class="progress-bar"></div>
+        </div>
+
+       <form action="/checkout" method="POST" style="margin-top: 20px;">
+            <input type="hidden" name="promoCode" value="KEBTYE10">
+            
+            <div style="display: grid; gap: 10px;">
+                <input type="text" name="customerName" placeholder="Your Name" required style="padding: 15px; border: 1px solid #ddd; border-radius: 5px;">
+                
+                <input type="tel" name="senderPhone" placeholder="Your Home-address" required style="padding: 15px; border: 1px solid #ddd; border-radius: 5px;">
+            </div>
+
+            <label for="sPhone">Your Phone Number</label>
+            <input type="tel" id="sPhone" name="senderPhone" placeholder="080..." required>
+                
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <label>Qty{Kg}:</label>
+                    <input type="number" name="quantity" value="1" style="padding: 15px; width: 60px; text-align: center; border: 1px solid #ddd; border-radius: 5px;">
+                </div>
+            </div>
+
+            <button type="submit" style="width: 100%; background: var(--temu-orange); color: white; padding: 20px; font-size: 1.5rem; font-weight: bold; border: none; border-radius: 50px; margin-top: 20px; cursor: pointer; animation: pulse 1s infinite;">
+                CLAIM DEAL NOW
+            </button>
+            <p style="text-align: center; font-size: 0.8rem; color: grey; margin-top: 10px;">🔒 Secure Checkout • Free Returns</p>
+        </form>
+    </div>
+
+    <div class="sale-toast" id="toast">
+        <i class="fas fa-check-circle" style="color: #2ecc71;"></i>
+        <div>
+            <strong>Sarah from Abuja</strong><br>
+            Just bought 5 bags!
+        </div>
+    </div>
+
+    <script>
+        // 1. Spin Logic
+        function spinWheel() {
+            const wheel = document.getElementById('theWheel');
+            // Spin 3 times (1080 deg) + random bit
+            wheel.style.transform = "rotate(" + (1080 + Math.random() * 360) + "deg)";
+            
+            setTimeout(() => {
+                document.getElementById('wheelModal').style.display = 'none';
+                alert("CONGRATS! You won a 10% Discount!");
+            }, 4500); // Wait for spin to finish
+        }
+
+        // 2. Countdown Timer
+        let time = 900; // 15 minutes
+        setInterval(() => {
+            time--;
+            let mins = Math.floor(time / 60);
+            let secs = time % 60;
+            document.getElementById('timer').innerText = 
+                (mins < 10 ? "0" : "") + mins + ":" + (secs < 10 ? "0" : "") + secs;
+        }, 1000);
+
+        // 3. Fake Notifications
+        const names = ["David", "Chidinma", "Musa", "Grace","Favour","Yakubu"];
+        const cities = ["Abuja","Bwari"];
+        
+        setInterval(() => {
+            const toast = document.getElementById('toast');
+            // Randomize content
+            const name = names[Math.floor(Math.random() * names.length)];
+            const city = cities[Math.floor(Math.random() * cities.length)];
+            toast.innerHTML = `<i class="fas fa-shopping-bag" style="color: orange;"></i> <div><strong>${name} from ${city}</strong><br>Just bought 3 bags!</div>`;
+            
+            // Show toast
+            toast.style.transform = "translateY(0)";
+            
+            // Hide after 3 seconds
+            setTimeout(() => {
+                toast.style.transform = "translateY(100px)";
+            }, 3000);
+        }, 8000); // Every 8 seconds
+    </script>
+</body>
+</html>
